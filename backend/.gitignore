@@ -1,0 +1,34 @@
+# Environment and secrets – never commit
+.env
+.env.local
+.env.*.local
+*.pem
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+.venv/
+*.egg-info/
+.eggs/
+dist/
+build/
+*.egg
+
+# ChromaDB local storage
+chroma_db/
+
+# IDE / OS / logs
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+*.log
+.temp/
+tmp/
