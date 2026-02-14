@@ -62,3 +62,4 @@ Desktop.ini
 .temp/
 tmp/
 temp/
+backend/.env
