@@ -1,0 +1,586 @@
+/* ========================================
+   Mitraa Chatbot Widget Styles
+   ======================================== */
+
+/* CSS Variables for theming */
+:root {
+    --oorzaa-primary: #E85D04;
+    --oorzaa-primary-dark: #D35400;
+    --oorzaa-secondary: #FFC857;
+    --oorzaa-accent: #6B4226;
+    --oorzaa-bg-light: #FFF8F0;
+    --oorzaa-bg-dark: #1A1A2E;
+    --oorzaa-text-dark: #2C3E50;
+    --oorzaa-text-light: #FFFFFF;
+    --oorzaa-shadow: rgba(232, 93, 4, 0.3);
+    --oorzaa-gradient: linear-gradient(135deg, #E85D04 0%, #FFC857 100%);
+}
+
+/* Demo page styles */
+.demo-page {
+    max-width: 800px;
+    margin: 100px auto;
+    padding: 40px;
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.demo-page h1 {
+    color: var(--oorzaa-primary);
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+.demo-page p {
+    color: var(--oorzaa-text-dark);
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+/* ========================================
+   Floating Chat Button
+   ======================================== */
+
+.oorzaa-chat-button {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--oorzaa-gradient);
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 20px var(--oorzaa-shadow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 9999;
+}
+
+.oorzaa-chat-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 30px var(--oorzaa-shadow);
+}
+
+.oorzaa-chat-button:active {
+    transform: scale(0.95);
+}
+
+.oorzaa-chat-button svg {
+    width: 32px;
+    height: 32px;
+    fill: white;
+}
+
+.oorzaa-chat-button.open .chat-icon {
+    display: none;
+}
+
+.oorzaa-chat-button.open .close-icon {
+    display: block;
+}
+
+.oorzaa-chat-button .close-icon {
+    display: none;
+}
+
+/* Pulse animation for attention */
+.oorzaa-chat-button::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: var(--oorzaa-primary);
+    animation: pulse 2s infinite;
+    z-index: -1;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 0.7;
+    }
+    50% {
+        transform: scale(1.3);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0;
+    }
+}
+
+/* ========================================
+   Chat Window
+   ======================================== */
+
+.oorzaa-chat-window {
+    position: fixed;
+    bottom: 100px;
+    right: 24px;
+    width: 380px;
+    height: 550px;
+    max-height: calc(100vh - 140px);
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 50px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 9998;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px) scale(0.95);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.oorzaa-chat-window.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 480px) {
+    .oorzaa-chat-window {
+        width: calc(100vw - 20px);
+        height: calc(100vh - 100px);
+        max-height: none;
+        right: 10px;
+        bottom: 90px;
+        border-radius: 16px;
+    }
+    
+    .oorzaa-chat-button {
+        width: 56px;
+        height: 56px;
+        right: 16px;
+        bottom: 16px;
+    }
+}
+
+/* ========================================
+   Chat Header
+   ======================================== */
+
+.oorzaa-chat-header {
+    background: var(--oorzaa-gradient);
+    color: white;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+.oorzaa-chat-avatar {
+    width: 48px;
+    height: 48px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+}
+
+.oorzaa-chat-header-info h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.oorzaa-chat-header-info p {
+    margin: 4px 0 0 0;
+    font-size: 12px;
+    opacity: 0.9;
+}
+
+.oorzaa-online-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.oorzaa-online-dot {
+    width: 8px;
+    height: 8px;
+    background: #4ADE80;
+    border-radius: 50%;
+    animation: blink 2s infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* ========================================
+   Chat Messages Area
+   ======================================== */
+
+.oorzaa-chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    background: var(--oorzaa-bg-light);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Custom scrollbar */
+.oorzaa-chat-messages::-webkit-scrollbar {
+    width: 6px;
+}
+
+.oorzaa-chat-messages::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.oorzaa-chat-messages::-webkit-scrollbar-thumb {
+    background: var(--oorzaa-primary);
+    border-radius: 3px;
+    opacity: 0.5;
+}
+
+/* Message bubbles */
+.oorzaa-message {
+    max-width: 85%;
+    animation: fadeInUp 0.3s ease;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.oorzaa-message.user {
+    align-self: flex-end;
+}
+
+.oorzaa-message.assistant {
+    align-self: flex-start;
+}
+
+.oorzaa-message-content {
+    padding: 12px 16px;
+    border-radius: 18px;
+    font-size: 14px;
+    line-height: 1.5;
+    word-wrap: break-word;
+}
+
+.oorzaa-message.user .oorzaa-message-content {
+    background: var(--oorzaa-gradient);
+    color: white;
+    border-bottom-right-radius: 4px;
+}
+
+.oorzaa-message.assistant .oorzaa-message-content {
+    background: white;
+    color: var(--oorzaa-text-dark);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border-bottom-left-radius: 4px;
+}
+
+/* Links inside messages */
+.oorzaa-message-content a {
+    color: var(--oorzaa-primary);
+    text-decoration: underline;
+    font-weight: 500;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.oorzaa-message-content a:hover {
+    color: var(--oorzaa-primary-dark);
+    text-decoration: underline;
+}
+
+.oorzaa-message.user .oorzaa-message-content a {
+    color: white;
+    text-decoration: underline;
+}
+
+.oorzaa-message.user .oorzaa-message-content a:hover {
+    color: var(--oorzaa-secondary);
+}
+
+/* Message timestamp */
+.oorzaa-message-time {
+    font-size: 11px;
+    color: #94A3B8;
+    margin-top: 4px;
+    text-align: right;
+}
+
+.oorzaa-message.assistant .oorzaa-message-time {
+    text-align: left;
+}
+
+/* ========================================
+   Quick Action Links
+   ======================================== */
+
+.oorzaa-quick-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.oorzaa-quick-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    background: white;
+    color: var(--oorzaa-primary);
+    border: 1px solid var(--oorzaa-primary);
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.oorzaa-quick-link:hover {
+    background: var(--oorzaa-primary);
+    color: white;
+}
+
+.oorzaa-quick-link svg {
+    width: 14px;
+    height: 14px;
+}
+
+/* ========================================
+   Typing Indicator
+   ======================================== */
+
+.oorzaa-typing-indicator {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 12px 16px;
+    background: white;
+    border-radius: 18px;
+    border-bottom-left-radius: 4px;
+    width: fit-content;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.oorzaa-typing-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--oorzaa-primary);
+    border-radius: 50%;
+    animation: typingBounce 1.4s ease-in-out infinite;
+}
+
+.oorzaa-typing-dot:nth-child(1) { animation-delay: 0s; }
+.oorzaa-typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.oorzaa-typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typingBounce {
+    0%, 60%, 100% { transform: translateY(0); }
+    30% { transform: translateY(-8px); }
+}
+
+/* ========================================
+   Escalation Banner
+   ======================================== */
+
+.oorzaa-escalation-banner {
+    background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    border-top: 1px solid #F59E0B;
+}
+
+.oorzaa-escalation-banner p {
+    margin: 0;
+    font-size: 14px;
+    color: #92400E;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.oorzaa-escalation-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.oorzaa-escalation-btn {
+    flex: 1;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.oorzaa-escalation-btn.whatsapp {
+    background: #25D366;
+    color: white;
+    border: none;
+}
+
+.oorzaa-escalation-btn.whatsapp:hover {
+    background: #20BD5A;
+}
+
+.oorzaa-escalation-btn.contact {
+    background: white;
+    color: var(--oorzaa-primary);
+    border: 1px solid var(--oorzaa-primary);
+}
+
+.oorzaa-escalation-btn.contact:hover {
+    background: var(--oorzaa-primary);
+    color: white;
+}
+
+/* ========================================
+   Chat Input Area
+   ======================================== */
+
+.oorzaa-chat-input-area {
+    padding: 16px;
+    background: white;
+    border-top: 1px solid #E2E8F0;
+    display: flex;
+    gap: 12px;
+    align-items: flex-end;
+    flex-shrink: 0;
+}
+
+.oorzaa-chat-input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 2px solid #E2E8F0;
+    border-radius: 24px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s ease;
+    resize: none;
+    max-height: 120px;
+    font-family: inherit;
+}
+
+.oorzaa-chat-input:focus {
+    border-color: var(--oorzaa-primary);
+}
+
+.oorzaa-chat-input::placeholder {
+    color: #94A3B8;
+}
+
+.oorzaa-send-button {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--oorzaa-gradient);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.oorzaa-send-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px var(--oorzaa-shadow);
+}
+
+.oorzaa-send-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.oorzaa-send-button svg {
+    width: 20px;
+    height: 20px;
+    fill: white;
+}
+
+/* ========================================
+   Suggested Questions (Initial State)
+   ======================================== */
+
+.oorzaa-suggestions {
+    padding: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    background: var(--oorzaa-bg-light);
+    border-bottom: 1px solid #E2E8F0;
+}
+
+.oorzaa-suggestion-chip {
+    padding: 8px 14px;
+    background: white;
+    border: 1px solid #E2E8F0;
+    border-radius: 16px;
+    font-size: 13px;
+    color: var(--oorzaa-text-dark);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.oorzaa-suggestion-chip:hover {
+    background: var(--oorzaa-primary);
+    color: white;
+    border-color: var(--oorzaa-primary);
+}
+
+/* ========================================
+   Welcome Message
+   ======================================== */
+
+.oorzaa-welcome {
+    text-align: center;
+    padding: 20px;
+}
+
+.oorzaa-welcome-icon {
+    font-size: 48px;
+    margin-bottom: 12px;
+}
+
+.oorzaa-welcome h4 {
+    margin: 0 0 8px 0;
+    color: var(--oorzaa-text-dark);
+    font-size: 18px;
+}
+
+.oorzaa-welcome p {
+    margin: 0;
+    color: #64748B;
+    font-size: 14px;
+    line-height: 1.5;
+}
